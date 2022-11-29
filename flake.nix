@@ -26,6 +26,10 @@
             prePatch = ''
               export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
             '';
+            postInstall = ''
+              mkdir -p $out/bin
+              ln -sf $out/lib/node_modules/reveal-md/bin/reveal-md.js $out/bin/reveal-md
+            '';
           })
         ];
       });
