@@ -17,11 +17,11 @@
     pkgs = genSystems (system: import nixpkgs {inherit system;});
   in {
     devShell = genSystems (system: let
-      inherit (pkgs.${system}) mkShell callPackage;
+      inherit (pkgs.${system}) mkShell reveal-md;
     in
       mkShell {
         packages = [
-          ((callPackage ./nodePackages {}).${"reveal-md-5.3.4"}.override {
+          (reveal-md.override {
             dontNpmInstall = true;
             prePatch = ''
               export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
