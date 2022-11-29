@@ -1,2 +1,3 @@
 # nixos-talks
-Reveal.js files for my talk(s) about NixOS
+
+Reveal.md files for my talk(s) about NixOS
