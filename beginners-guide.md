@@ -45,6 +45,9 @@ a different domain or something
 \** this isn't entirely guaranteed cross-architecture, its possible for a build
 to only support linux or only x86_64 etc
 
+nix is like the better docker: instead of adding a layer of complexity on top of
+the already complex original problem, they just... fixed the original problem
+
 ---
 
 ## Installation
