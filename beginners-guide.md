@@ -35,7 +35,7 @@ Pros | Cons
 ---|---
 No more dependency hell | You have to learn (some of) a new programming language
 Git track changes to your system <br> (allows for rollbacks) | Systemd dependant
-If a build works once, it will work forever* |
+If a build works once, it will work forever* | Incompatible with SELinux
 If a build works on your machine, it will work on another** |
 
 Note:
@@ -95,6 +95,37 @@ An example:
 
 ## Installing a package from nixpkgs
 
+use ``nix-shell`` or ``nix shell``
+
+``nix-shell`` is the *one* legacy command I recommend
+
+### An Example
+
+``nix-shell -p clang clang-tools gdb gtk4``
+To enter a simple gtk app development shell.
+
+Note:
+This is a step you'll skip if youre not a developer. The next slide is more for
+you
+
+---
+
+## Introducing: ``home-manager``
+
+This program will let you add persistent programs to your path.
+<br>Also you don't have to open a terminal and type
+``nix-shell -p firefox --command 'firefox & disown'`` to launch firefox lol
+
+---
+
+## What does home-manager do, exactly?
+
+- Creates symlinks from the nix store in places you specify.
+- That's it.
+
+Note:
+It's worth noting that this is how nixOS works, also. The only difference is
+that nixOS allows you to make symlinks outside of your homedir.
 
 ---
 
