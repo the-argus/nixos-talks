@@ -24,7 +24,8 @@ STATE: (noun) A condition or mode of being, as with regard to circumstances.
 STATE: (noun, with regard to computer science) Stuff that goes away if you
 re-install your operating system
 
-Note: State is bad because it's stuff that may not be on another person's
+Note: State may also be stuff that goes away if you delete and re-clone your git
+repo. State is bad because it's stuff that may not be on another person's
 computer, or stuff that you could lose if you're not careful.
 
 ---
@@ -106,7 +107,11 @@ To enter a simple gtk app development shell.
 
 Note:
 This is a step you'll skip if youre not a developer. The next slide is more for
-you
+you.
+Typing this command in every time is pretty annoying. Also, the versions
+of these packages are based on a not entirely stateless system called "channels."
+We're not going to cover all of the stateful legacy commands, because nix is much
+too complicated if you add those in. Instead, lets try flakes!
 
 ---
 
@@ -131,3 +136,68 @@ that nixOS allows you to make symlinks outside of your homedir.
 
 ## Making your first flake
 
+First, run ``nix flake init``. That will give you a file called ``flake.nix``
+that looks something like this:
+
+```nix
+{
+  description = "A very basic flake";
+
+  outputs = { self, nixpkgs }: {
+
+    packages.x86_64-linux.hello =
+      nixpkgs.legacyPackages.x86_64-linux.hello;
+
+    packages.x86_64-linux.default =
+      self.packages.x86_64-linux.hello;
+
+  };
+}
+```
+
+Note: I ask you to suspend any disbelief or curiosity you may have as to the
+syntax of the nix language or what exactly is going on here. A bunch of stuff
+here is nix "magic" and we'll go over it later in the talk.
+
+---
+
+## Some upgrades to the flake
+
+The flake is missing explicit inputs. Lets add these after the description.
+
+```nix
+{
+  description = "...";
+
+  inputs = {
+    nixpkgs = {
+      url = "github:nixos/nixpkgs?ref=nixos-22.05";
+    };
+  };
+
+  outputs = {...};
+}
+```
+
+Let's also run ``git init && git add .``
+
+Note: We're choosing specifically nixos-22.05 because we want the stable release
+of nixpkgs for this flake. If you prefer unstable for your usecase, use the
+nixos-unstable branch instead
+
+---
+
+## Building our first package
+
+- run ``nix run`` to build and run the default package.
+- see "Hello, World!" appear in the console.
+- a symlink to the (read-only) directory with the package in it will appear,
+called "result"
+
+Lets make a ``.gitignore``
+file and add a line containing ``result``, so it won't be tracked by git.
+
+Note:
+When you do this, no actual compilation should occur. The binary has already
+been built by other nix users, so it will be cached and simply downloaded. If
+you were to apply some patch or compiler flags, then it would build from source.
