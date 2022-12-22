@@ -106,20 +106,25 @@ use ``nix-shell`` or ``nix shell``
 To enter a simple gtk app development shell.
 
 Note:
-This is a step you'll skip if youre not a developer. The next slide is more for
-you.
 Typing this command in every time is pretty annoying. Also, the versions
 of these packages are based on a not entirely stateless system called "channels."
 We're not going to cover all of the stateful legacy commands, because nix is much
-too complicated if you add those in. Instead, lets try flakes!
+too complicated if you learn the old way *and* the new way.
+It's just shorter to type than nix shell, since for nix shell you have to
+specify nixpkgs#packagename for each package
+This is a step you'll skip if youre not a developer. The next slide is more for
+you.
 
 ---
 
 ## Introducing: ``home-manager``
 
 This program will let you add persistent programs to your path.
-<br>Also you don't have to open a terminal and type
-``nix-shell -p firefox --command 'firefox & disown'`` to launch firefox lol
+<br>
+Also, you don't have to open a terminal and type
+<br>
+``nix-shell -p firefox --command 'firefox & disown'``
+to launch firefox lol
 
 ---
 
@@ -131,6 +136,23 @@ This program will let you add persistent programs to your path.
 Note:
 It's worth noting that this is how nixOS works, also. The only difference is
 that nixOS allows you to make symlinks outside of your homedir.
+
+---
+
+## Installing home-manager
+
+``nix-shell -p home-manager``
+
+---
+
+## Now what command do we run?
+
+We need a configuration first, and then we will run:
+<br>
+``home-manager switch --flake path/to/configuration``
+<br>
+A flake is like a package of nix code, and it's the format we'll be using to
+configure our user's environment
 
 ---
 
@@ -183,21 +205,66 @@ Let's also run ``git init && git add .``
 
 Note: We're choosing specifically nixos-22.05 because we want the stable release
 of nixpkgs for this flake. If you prefer unstable for your usecase, use the
-nixos-unstable branch instead
+nixos-unstable branch instead.
+Super cool because you can do this on nixOS too- switch between stable and
+rolling release at any time, switch back, and no residue is left behind. The
+slate is wiped clean.
 
 ---
 
 ## Building our first package
 
 - run ``nix run`` to build and run the default package.
-- see "Hello, World!" appear in the console.
-- a symlink to the (read-only) directory with the package in it will appear,
-called "result"
-
-Lets make a ``.gitignore``
-file and add a line containing ``result``, so it won't be tracked by git.
+- watch nix download nixpkgs source, and then the gnu ``hello`` package
+- watch "Hello, World!" appear in the console.
 
 Note:
 When you do this, no actual compilation should occur. The binary has already
 been built by other nix users, so it will be cached and simply downloaded. If
 you were to apply some patch or compiler flags, then it would build from source.
+
+---
+
+## Building our *second* package
+
+Lets add another output to our flake, this one *wont* be ``default``. Here's how
+our ``outputs`` should look now:
+
+```nix
+{
+  outputs = { self, nixpkgs }: {
+
+    packages.x86_64-linux.hello =
+      nixpkgs.legacyPackages.x86_64-linux.hello;
+
+    packages.x86_64-linux.ripgrep =
+      nixpkgs.legacyPackages.x86_64-linux.ripgrep;
+
+    packages.x86_64-linux.default =
+      self.packages.x86_64-linux.hello;
+
+  };
+}
+```
+
+Then run: ``nix build .#ripgrep`` in the flake's directory.
+
+A symlink to the (read-only) directory with the package in it will appear,
+called "result"
+
+Lets also make a ``.gitignore`` file and add a line containing ``result``, so it
+won't be tracked by git
+
+Note:
+First of all, entirely disregard ``legacyPackages.x86_64-linux``. It's an old way
+of specifying what kind of packages you want from nixpkgs, and the new way is better
+and we'll go over it in another slide.
+
+---
+
+## Remember home-manager?
+
+Home manager is really just a shell script, and just ends up executing ``nix``
+commands. ``home-manager switch`` is (mostly) equivalent to:
+<br>
+``nix build .#homeConfigurations."$(whoami)@$(hostname)"``
