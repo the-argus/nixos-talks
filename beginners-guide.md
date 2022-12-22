@@ -247,6 +247,30 @@ our ``outputs`` should look now:
 }
 ```
 
+---
+
+## Lets refactor that...
+
+```nix
+{
+  outputs = { self, nixpkgs }: {
+
+    packages.x86_64-linux = rec {
+        hello =
+            nixpkgs.legacyPackages.x86_64-linux.hello;
+
+        ripgrep =
+            nixpkgs.legacyPackages.x86_64-linux.ripgrep;
+
+        default = hello;
+  };
+}
+```
+
+---
+
+## Okay, now actually build it
+
 Then run: ``nix build .#ripgrep`` in the flake's directory.
 
 A symlink to the (read-only) directory with the package in it will appear,
@@ -267,4 +291,7 @@ and we'll go over it in another slide.
 Home manager is really just a shell script, and just ends up executing ``nix``
 commands. ``home-manager switch`` is (mostly) equivalent to:
 <br>
-``nix build .#homeConfigurations."$(whoami)@$(hostname)"``
+``nix build .#homeConfigurations."$(whoami)@\$(hostname)"``
+
+Note:
+took 22 minutes to get to this point in the talk.
