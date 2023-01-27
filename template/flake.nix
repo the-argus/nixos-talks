@@ -11,8 +11,8 @@
     system = "x86_64-linux";
     pkgs = import nixpkgs {localSystem = {inherit system;};};
   in {
-    packages = {
-      default = pkgs.${system}.callPackage ./default.nix {};
+    packages.${system} = {
+      default = pkgs.callPackage ./default.nix {};
     };
   };
 }

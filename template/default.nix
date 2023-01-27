@@ -8,10 +8,11 @@ stdenv.mkDerivation {
   pname = "example-gtk-app";
   version = "2023-01-27";
   src = fetchgit {
-    url = "https://github.com/robertapengelly92/ExampleGtkApplication";
-    sha256 = "0hbgxlyims26vmkz4vf1p73r2m035avlry02jiz5j9534czfbqbj";
-    rev = "c550074b0a5862c0d38af13442a76124317ddcd3";
+    url = "https://github.com/rajeshsola/gnu-hello";
+    sha256 = "0nzfkfyq5mfaslwgfw3hrz58ca7q275xsqj297xwblqv8v0g2n3n";
+    rev = "274bd5b954066558a5ead00d3cceefe21ecdba9b";
   };
 
+  # this package does not need gtk4 lol but its an example
   nativeBuildInputs = [gtk4];
 }
