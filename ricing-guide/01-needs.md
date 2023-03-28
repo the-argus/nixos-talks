@@ -28,6 +28,9 @@ II. Common Needs
     - Image editor
     - PDF Viewer
 III. Enhancements
+    - Display manager themes
+    - GTK/QT/graphics lib themes
+    - Bootloader themes
     - Shell completion, syntax highlighting
     - Shell prompt
     - Text editor customizations/plugins
