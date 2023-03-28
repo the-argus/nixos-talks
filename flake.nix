@@ -27,7 +27,7 @@
     };
 
     packages = genSystems (system: {
-      nixosConfigs.ricing-guide = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.ricing-guide = nixpkgs.lib.nixosSystem {
         pkgs = pkgs.${system};
         inherit system;
         modules = [./ricing-guide/nixos/configuration.nix];
@@ -38,7 +38,7 @@
         };
       };
 
-      homeConfigs.ricing-guide = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.ricing-guide = home-manager.lib.homeManagerConfiguration {
         pkgs = pkgs.${system};
         modules = [./ricing-guide/home];
         extraSpecialArgs = {
