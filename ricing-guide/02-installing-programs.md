@@ -10,8 +10,6 @@ the following criteria:
 4. How often will the program be updated?
     This can be good or bad. If you're installing your everyday use web browser,
     the answer to this question *must* be: all the time.
-    Maybe if you just want stability, and there's no new features you need, you
-    might want to never have to update.
 
 5. Who is making sure that the package I'm trying to install isn't actually
 malware?
