@@ -35,7 +35,7 @@ computer, or stuff that you could lose if you're not careful.
 Pros | Cons
 ---|---
 No more dependency hell | You have to learn (some of) a new programming language
-Git track changes to your system <br> (allows for rollbacks) | Systemd dependant
+Git track changes to your system <br> (allows for rollbacks) | Systemd dependent
 If a build works once, it will work forever* | Incompatible with SELinux
 If a build works on your machine, it will work on another** |
 
