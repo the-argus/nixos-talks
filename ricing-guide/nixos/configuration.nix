@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   hostname,
   username,
   stateVersion,
